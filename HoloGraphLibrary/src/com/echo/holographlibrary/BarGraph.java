@@ -229,6 +229,11 @@ public class BarGraph extends View {
         return true;
     }
 
+    public void notifyDataSetChanged() {
+        shouldUpdate = true;
+        postInvalidate();
+    }
+
     public void setOnBarClickedListener(OnBarClickedListener listener) {
         this.listener = listener;
     }
