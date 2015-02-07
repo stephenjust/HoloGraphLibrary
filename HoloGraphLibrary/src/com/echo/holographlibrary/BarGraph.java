@@ -50,6 +50,7 @@ public class BarGraph extends View {
     private Boolean append = false;
     private Rect r2 = new Rect();
     private Rect r3 = new Rect();
+    private int axisMax = 0;
 
     public BarGraph(Context context) {
         super(context);
@@ -76,6 +77,10 @@ public class BarGraph extends View {
         return this.unit;
     }
 
+    public void setAxisMax(int max) { this.axisMax = max; }
+
+    public int getAxisMax() { return axisMax; }
+
     public void appendUnit(Boolean doAppend) {
         this.append = doAppend;
     }
@@ -96,7 +101,7 @@ public class BarGraph extends View {
             canvas.drawColor(Color.TRANSPARENT);
             NinePatchDrawable popup = (NinePatchDrawable) this.getResources().getDrawable(R.drawable.popup_black);
 
-            float maxValue = 0;
+            float maxValue = getAxisMax();
             float padding = 7;
             int selectPadding = 4;
             float bottomPadding = 40;
@@ -104,7 +109,11 @@ public class BarGraph extends View {
             float usableHeight;
             if (showBarText) {
                 this.p.setTextSize(40);
-                this.p.getTextBounds(unit, 0, 1, r3);
+                if (unit.length() == 0) {
+                    r3.set(0, 0, 0, 0);
+                } else {
+                    this.p.getTextBounds(unit, 0, 1, r3);
+                }
                 usableHeight = getHeight() - bottomPadding - Math.abs(r3.top - r3.bottom) - 26;
             } else {
                 usableHeight = getHeight() - bottomPadding;
